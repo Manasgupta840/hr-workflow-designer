@@ -13,6 +13,7 @@ import type { Node } from "@xyflow/react";
 import { createPortal } from "react-dom";
 import { Button } from "@mui/material";
 import { editFormPortalId } from "../../constants/common.constants";
+import Input from "../atoms/Input";
 
 interface ApprovalNodeFormProps {
   node: Node<ApprovalNodeData>;
@@ -36,7 +37,7 @@ const ApprovalNodeForm = ({
   const {
     register,
     control,
-    formState: { isDirty },
+    formState: { isDirty, errors },
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
@@ -98,14 +99,14 @@ const ApprovalNodeForm = ({
         )}
 
       <div className="space-y-1">
-        <label className="flex items-center gap-2 font-semibold text-gray-900">
-          <Type size={16} className="text-blue-500" />
-          Title
-        </label>
-        <input
+        <Input
           {...register("label", { required: true })}
           placeholder="Enter approval title"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          error={!!errors.label}
+          helperText={errors.label?.message}
+          label="Title"
+          labelIcon={<Type size={16} className="text-blue-500" />}
+          required
         />
       </div>
 
@@ -124,26 +125,26 @@ const ApprovalNodeForm = ({
 
       <div className="grid grid-cols-1 gap-4">
         <div className="space-y-1">
-          <label className="flex items-center gap-2 font-semibold text-gray-900">
-            <User size={16} className="text-blue-500" />
-            Assignee
-          </label>
-          <input
+          <Input
             {...register("assignee")}
             placeholder="Who is responsible?"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+            error={!!errors.assignee}
+            helperText={errors.assignee?.message}
+            label="Assignee"
+            labelIcon={<User size={16} className="text-blue-500" />}
+            required
           />
         </div>
 
         <div className="space-y-1">
-          <label className="flex items-center gap-2 font-semibold text-gray-900">
-            <Calendar size={16} className="text-blue-500" />
-            Due Date
-          </label>
-          <input
+          <Input
             type="date"
             {...register("dueDate")}
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+            error={!!errors.dueDate}
+            helperText={errors.dueDate?.message}
+            label="Due Date"
+            labelIcon={<Calendar size={16} className="text-blue-500" />}
+            required
           />
         </div>
       </div>
@@ -166,19 +167,23 @@ const ApprovalNodeForm = ({
         <div className="space-y-2">
           {fields.map((field, index) => (
             <div key={field.id} className="flex gap-2 items-start">
-              <input
+              <Input
                 {...register(`customFields.${index}.key` as const, {
                   required: true,
                 })}
                 placeholder="Key"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                error={!!errors.customFields?.[index]?.key}
+                helperText={errors.customFields?.[index]?.key?.message}
+                required
               />
-              <input
+              <Input
                 {...register(`customFields.${index}.value` as const, {
                   required: true,
                 })}
                 placeholder="Value"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                error={!!errors.customFields?.[index]?.value}
+                helperText={errors.customFields?.[index]?.value?.message}
+                required
               />
               <button
                 type="button"

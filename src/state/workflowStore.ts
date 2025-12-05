@@ -228,7 +228,7 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
     if (!rfInstance) return;
     const flowKey = `${currentWorkflowName}-${fileNamePrefix}`;
     const flow = rfInstance.toObject();
-
+    
     localStorage.setItem(flowKey, JSON.stringify(flow));
     globalThis.dispatchEvent(new Event("storage"));
   },

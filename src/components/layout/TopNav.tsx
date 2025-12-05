@@ -8,7 +8,7 @@ const TopNav = () => {
     isEditingEnabled,
     setIsEditingEnabled,
     setCurrentWorkflowName,
-    saveWorkflow,
+    saveCurrentWorkflow,
     createNewWorkflow,
   } = useTopNavStates();
   return (
@@ -46,7 +46,7 @@ const TopNav = () => {
         <Button
           variant="contained"
           size="small"
-          onClick={saveWorkflow}
+          onClick={saveCurrentWorkflow}
           className="px-4 py-1 bg-blue-500 text-white rounded"
         >
           <span>Save Workflow</span>

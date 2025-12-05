@@ -5,6 +5,7 @@ import type { Node } from "@xyflow/react";
 import { createPortal } from "react-dom";
 import { Button } from "@mui/material";
 import { editFormPortalId } from "../../constants/common.constants";
+import Input from "../atoms/Input";
 
 interface StartNodeFormProps {
   node: Node<StartNodeData>;
@@ -21,7 +22,7 @@ const StartNodeForm = ({ node, onChange, onSuccess }: StartNodeFormProps) => {
   const {
     register,
     control,
-    formState: { isDirty },
+    formState: { isDirty, errors },
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
@@ -75,14 +76,14 @@ const StartNodeForm = ({ node, onChange, onSuccess }: StartNodeFormProps) => {
         )}
 
       <div className="space-y-1">
-        <label className="flex items-center gap-2 font-semibold text-gray-900">
-          <Type size={16} className="text-blue-500" />
-          Start Title
-        </label>
-        <input
+        <Input
           {...register("label", { required: true })}
-          placeholder="e.g., Initial Process Start"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          placeholder="Enter task title"
+          error={!!errors.label}
+          helperText={errors.label?.message}
+          label="Title"
+          labelIcon={<Type size={16} className="text-blue-500" />}
+          required
         />
       </div>
 
@@ -104,17 +105,17 @@ const StartNodeForm = ({ node, onChange, onSuccess }: StartNodeFormProps) => {
         <div className="space-y-2">
           {fields.map((field, index) => (
             <div key={field.id} className="flex gap-2 items-start">
-              <input
+              <Input
                 {...register(`meta.${index}.key` as const, { required: true })}
                 placeholder="Key"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                required
               />
-              <input
+              <Input
                 {...register(`meta.${index}.value` as const, {
                   required: true,
                 })}
                 placeholder="Value"
-                className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                required
               />
               <button
                 type="button"

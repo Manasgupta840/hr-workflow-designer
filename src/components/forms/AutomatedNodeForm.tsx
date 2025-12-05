@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { Button } from "@mui/material";
 import { editFormPortalId } from "../../constants/common.constants";
 import { useEffect } from "react";
+import Input from "../atoms/Input";
 
 interface AutomatedNodeFormProps {
   node: Node<AutomatedNodeData>;
@@ -44,7 +45,7 @@ const AutomatedNodeForm = ({
 }: AutomatedNodeFormProps) => {
   const {
     register,
-    formState: { isDirty },
+    formState: { isDirty, errors },
     handleSubmit,
     watch,
   } = useForm({
@@ -96,14 +97,14 @@ const AutomatedNodeForm = ({
         )}
 
       <div className="space-y-1">
-        <label className="flex items-center gap-2 font-semibold text-gray-900">
-          <Zap size={16} className="text-blue-500" />
-          Title
-        </label>
-        <input
+        <Input
           {...register("label", { required: true })}
           placeholder="Enter automation title"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+          error={!!errors.label}
+          helperText={errors.label?.message}
+          label="Title"
+          labelIcon={<Zap size={16} className="text-blue-500" />}
+          required
         />
       </div>
 
@@ -132,15 +133,16 @@ const AutomatedNodeForm = ({
           <h4 className="font-medium text-gray-900">Action Parameters</h4>
           {selectedAction.params.map((param) => (
             <div key={param.key} className="space-y-1">
-              <label className="text-xs font-medium text-gray-600">
-                {param.label}
-              </label>
-              <input
+              <Input
                 {...register(`actionParams.${param.key}` as const, {
                   required: true,
                 })}
                 placeholder={`Enter ${param.label.toLowerCase()}`}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
+                error={!!errors.actionParams?.[param.key]}
+                helperText={errors.actionParams?.[param.key]?.message}
+                label={param.label}
+                labelIcon={<Settings size={16} className="text-blue-500" />}
+                required
               />
             </div>
           ))}
