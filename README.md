@@ -2,6 +2,11 @@
 
 A React-based prototype for visually designing and testing internal HR workflows. This application allows HR admins to create workflows for processes like onboarding, leave approval, and document verification using a drag-and-drop interface.
 
+<img width="1501" height="826" alt="image" src="https://github.com/user-attachments/assets/faaf8944-44d6-4706-84c0-5a4aff637a51" />
+<img width="1501" height="817" alt="image" src="https://github.com/user-attachments/assets/46986470-0671-4dad-b087-454ea82cb533" />
+
+
+
 ## Architecture
 
 This project is built with a modern frontend stack focusing on modularity, scalability, and developer experience.
