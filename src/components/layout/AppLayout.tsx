@@ -1,6 +1,7 @@
 import Sidebar from "./Sidebar";
 import { WorkflowCanvas } from "../canvas/WorkflowCanvas";
 import TopNav from "./TopNav";
+import RightPanel from "./RightPanel";
 
 const AppLayout = () => {
   return (
@@ -14,6 +15,9 @@ const AppLayout = () => {
           <div className="p-3 flex-1 overflow-y-auto">
             <WorkflowCanvas />
           </div>
+        </div>
+        <div className="flex-none h-screen sticky top-0 right-0 overflow-hidden absolute">
+          <RightPanel />
         </div>
       </div>
     </div>

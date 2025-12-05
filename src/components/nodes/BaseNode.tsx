@@ -8,10 +8,11 @@ import {
 } from "@xyflow/react";
 import type { BaseNodeData } from "../../types/workflow";
 import { useWorkflowStore } from "../../state/workflowStore";
+import { EditIcon } from "lucide-react";
 
 const BaseNode = ({ id, data, selected }: NodeProps<Node<BaseNodeData>>) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const { updateNodeData } = useWorkflowStore();
+  const [isEditingLabel, setIsEditingLabel] = useState(false);
+  const { updateNodeData, toggleDrawer } = useWorkflowStore();
   const handleDirection = data.handleDirection || [
     "left",
     "right",
@@ -28,8 +29,8 @@ const BaseNode = ({ id, data, selected }: NodeProps<Node<BaseNodeData>>) => {
       <NodeResizer
         color="#2563eb"
         isVisible={selected}
-        minWidth={120}
-        minHeight={40}
+        minWidth={80}
+        minHeight={20}
       />
 
       <Handle
@@ -48,21 +49,31 @@ const BaseNode = ({ id, data, selected }: NodeProps<Node<BaseNodeData>>) => {
       />
 
       <div className="flex items-center justify-between mb-1">
-        {isEditing ? (
+        {isEditingLabel ? (
           <input
             value={data.label}
-            onBlur={() => setIsEditing(false)}
+            onBlur={() => setIsEditingLabel(false)}
             onChange={(e) => updateNodeData(id, { label: e.target.value })}
-            onKeyDown={(e) => e.key === "Enter" && setIsEditing(false)}
+            onKeyDown={(e) => e.key === "Enter" && setIsEditingLabel(false)}
             className="text-xs border rounded px-1"
             autoFocus
           />
         ) : (
           <div
-            onDoubleClick={() => setIsEditing(true)}
+            onDoubleClick={() => setIsEditingLabel(true)}
             className="font-medium text-gray-800 cursor-pointer"
           >
             {data.label || "Untitled"}
+          </div>
+        )}
+
+        {/* Edit Node information */}
+        {selected && (
+          <div className="absolute top-0 right-0 flex items-center justify-center w-4 h-4 bg-gray-200 rounded-full cursor-pointer">
+            <EditIcon
+              onClick={() => toggleDrawer(true)}
+              className="w-2 h-2 text-gray-600"
+            />
           </div>
         )}
 

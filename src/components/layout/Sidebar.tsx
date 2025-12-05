@@ -11,7 +11,8 @@ import SavedWorkflowItem from "../atoms/SavedWorkflowItem";
 import useSidebarStates from "../hooks/useSidebarStates";
 
 const Sidebar = () => {
-  const { fileNamesList, handleLoadFile } = useSidebarStates();
+  const { fileNamesList, handleLoadFile, handleDeleteFile } =
+    useSidebarStates();
 
   return (
     <aside className="row-span-2 h-screen z-50 flex flex-col bg-gray-100 w-[13rem] p-4 border-r border-gray-300">
@@ -62,6 +63,7 @@ const Sidebar = () => {
                 key={wf.id}
                 name={wf.name}
                 onClick={() => handleLoadFile(wf.name)}
+                onDelete={() => handleDeleteFile(wf.id)}
               />
             ))}
           </div>

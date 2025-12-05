@@ -1,4 +1,6 @@
+import { Button } from "@mui/material";
 import { useTopNavStates } from "../hooks/useTopNavStates";
+import { PlusIcon } from "lucide-react";
 
 const TopNav = () => {
   const {
@@ -7,6 +9,7 @@ const TopNav = () => {
     setIsEditingEnabled,
     setCurrentWorkflowName,
     saveWorkflow,
+    createNewWorkflow,
   } = useTopNavStates();
   return (
     <header className="h-12 border-b-2 border-gray-200 px-4 pr-8 flex items-center justify-between">
@@ -29,12 +32,26 @@ const TopNav = () => {
           </div>
         )}
       </div>
-      <button
-        onClick={saveWorkflow}
-        className="px-4 py-1 bg-blue-500 text-white rounded"
-      >
-        <span>Save</span>
-      </button>
+      <div className="flex gap-2">
+        <Button
+          variant="contained"
+          size="small"
+          onClick={createNewWorkflow}
+          className="px-4 py-1 bg-blue-500 text-white rounded"
+          startIcon={<PlusIcon className="w-5 h-5" />}
+        >
+          <span>New Workflow</span>
+        </Button>
+
+        <Button
+          variant="contained"
+          size="small"
+          onClick={saveWorkflow}
+          className="px-4 py-1 bg-blue-500 text-white rounded"
+        >
+          <span>Save Workflow</span>
+        </Button>
+      </div>
     </header>
   );
 };

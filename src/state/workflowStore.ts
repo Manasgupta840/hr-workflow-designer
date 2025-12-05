@@ -35,6 +35,11 @@ interface WorkflowStore {
   addNode: (type: WorkflowNodeData["type"], position: XYPosition) => void;
   updateNodeData: (id: string, partial: Partial<WorkflowNodeData>) => void;
   deleteNode: (id: string) => void;
+  getSelectedNode: () => Node<WorkflowNodeData> | undefined;
+
+  //Edit Node actions
+  toggleDrawer: (open: boolean) => void;
+  isDrawerOpen: boolean;
 
   // Edge actions
   setEdges: (updater: (edges: Edge[]) => Edge[]) => void;
@@ -65,6 +70,8 @@ interface WorkflowStore {
   loadWorkflow: (fileName: string) => void;
   currentWorkflowName: string | null;
   setCurrentWorkflowName: (name: string | null) => void;
+  getSavedWorkflowsNames: () => string[];
+  createNewWorkflow: () => void;
 }
 
 const createInitialNodeData = (
@@ -115,12 +122,20 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
     automated: AutomatedNode,
   },
   rfInstance: null,
+  isDrawerOpen: false,
+  toggleDrawer: (open: boolean) => set({ isDrawerOpen: open }),
+
   setRfInstance: (instance) => set({ rfInstance: instance }),
 
   setNodes: (updater) => set((state) => ({ nodes: updater(state.nodes) })),
   setEdges: (updater) => set((state) => ({ edges: updater(state.edges) })),
 
   setCurrentWorkflowName: (name) => set({ currentWorkflowName: name }),
+
+  getSelectedNode: () => {
+    const { selectedNodeId, nodes } = get();
+    return nodes.find((node) => node.id === selectedNodeId);
+  },
 
   addNode: (type, position) => {
     const id = nanoid();
@@ -215,10 +230,11 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
     const flow = rfInstance.toObject();
 
     localStorage.setItem(flowKey, JSON.stringify(flow));
+    globalThis.dispatchEvent(new Event("storage"));
   },
 
   loadWorkflow: (currentWorkflowName: string) => {
-    const { rfInstance, setCurrentWorkflowName } = get(); // access current state
+    const { rfInstance, setCurrentWorkflowName } = get();
 
     if (!rfInstance) return;
     setCurrentWorkflowName(currentWorkflowName);
@@ -234,5 +250,17 @@ export const useWorkflowStore = create<WorkflowStore>((set, get) => ({
     };
 
     restoreFlow();
+  },
+
+  getSavedWorkflowsNames: () => {
+    return Object.keys(localStorage).filter((key) =>
+      key.includes(fileNamePrefix)
+    );
+  },
+
+  createNewWorkflow: () => {
+    const { setCurrentWorkflowName } = get();
+    setCurrentWorkflowName("Untitled Workflow");
+    set(() => ({ nodes: [], edges: [] }));
   },
 }));

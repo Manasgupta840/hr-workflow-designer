@@ -3,8 +3,12 @@ import { useState } from "react";
 
 export const useTopNavStates = () => {
   const [isEditingEnabled, setIsEditingEnabled] = useState<boolean>(false);
-  const { currentWorkflowName, setCurrentWorkflowName, saveWorkflow } =
-    useWorkflowStore();
+  const {
+    currentWorkflowName,
+    setCurrentWorkflowName,
+    saveWorkflow,
+    createNewWorkflow,
+  } = useWorkflowStore();
 
   return {
     currentWorkflowName,
@@ -12,5 +16,6 @@ export const useTopNavStates = () => {
     setIsEditingEnabled,
     setCurrentWorkflowName,
     saveWorkflow,
+    createNewWorkflow,
   };
 };

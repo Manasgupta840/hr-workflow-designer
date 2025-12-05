@@ -33,15 +33,14 @@ export interface ApprovalNodeData extends BaseNodeData {
 
 export interface AutomatedNodeData extends BaseNodeData {
   type: "automated";
-  description?: string;
-  assignee?: string;
-  dueDate?: string;
-  customFields: Record<string, string>;
+  action?: string;
+  actionParams?: Record<string, string>;
 }
 
 export interface EndNodeData extends BaseNodeData {
   type: "end";
-  meta: Record<string, string>;
+  endMessage?: string;
+  summaryFlag?: boolean;
 }
 
 export type WorkflowNodeData =
